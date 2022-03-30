@@ -1,0 +1,27 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main(void)
+{
+	int InputArray[6];
+	int iCount1, iCount2, iTemp;
+
+	scanf("%d %d %d %d %d %d", InputArray, InputArray + 1, InputArray + 2, InputArray + 3, InputArray + 4, InputArray + 5);
+
+	for (iCount1 = 0; iCount1 <= 4; iCount1++)
+	{
+		for (iCount2 = 0; iCount2 <= 4 - iCount1; iCount2++)
+		{
+			if (InputArray[iCount2] > InputArray[iCount2 + 1])
+			{
+				iTemp = InputArray[iCount2];
+				InputArray[iCount2] = InputArray[iCount2 + 1];
+				InputArray[iCount2 + 1] = iTemp;
+			}
+		}
+	}
+
+	printf("[%d, %d, %d, %d, %d, %d]\n", InputArray[0], InputArray[1], InputArray[2], InputArray[3], InputArray[4], InputArray[5]);
+
+	return 0;
+}
