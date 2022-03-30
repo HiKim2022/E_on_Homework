@@ -1,0 +1,29 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int CalSum(int iValue[]);
+
+int main()
+{
+	int inputArray[6];
+	int iResult;
+
+	printf("원하시는 숫자 6개를 입력하세요 : ");
+	scanf("%d, %d, %d, %d, %d, %d", &inputArray[0], &inputArray[1], &inputArray[2], &inputArray[3], &inputArray[4], &inputArray[5]);
+
+	iResult = CalSum(inputArray);
+	printf("입력하신 수들의 합은 %d입니다.", iResult);
+	return 0;
+}
+
+int CalSum(int iValue[])
+{
+	int iCount, iSum;
+	iSum = 0;
+	for (iCount = 0; iCount < 6; iCount++)
+	{
+		iSum += iValue[iCount];
+	}
+
+	return iSum;
+}
