@@ -76,7 +76,7 @@ void Get_Array(int* ar, int len)
 	{
 		printf("%d, ", *(ar + ic));
 	}
-	printf("%d ] 입니다.\n\n", *(ar + len - 1));
+	printf(" %d] 입니다.\n\n", *(ar + len - 1));
 
 }
 
