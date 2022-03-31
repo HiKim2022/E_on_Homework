@@ -50,6 +50,10 @@ int main()
 	}
 	printf("%d]", result_array[comlen - 1]);
 
+	free(array);
+	free(commands);
+	free(result_array);
+
 	return 0;
 }
 
@@ -107,7 +111,7 @@ void Get_Commands(int **ca, int len)
 			scanf("%d", ca[ic] + 2);
 			if (ca[ic][2] > ca[ic][1] - ca[ic][0] + 1)
 			{
-				printf("구간을 벗어납니다.\n");
+				printf("구간을 벗어납니다.");
 			}
 		} while (ca[ic][2] > ca[ic][1] - ca[ic][0] + 1);
 
