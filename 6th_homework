@@ -1,0 +1,59 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int Get_Number_of_Case(int pieces);
+int Combination(int n, int k);
+
+int main()
+{
+	int num_pieces, num_cases;
+
+	printf("피자 조각 수를 적어주세요 : ");
+	scanf("%d", &num_pieces);
+
+	num_cases = Get_Number_of_Case(num_pieces);
+
+	printf("경우의 수는 %d입니다.\n", num_cases);
+
+	return 0;
+}
+
+int Get_Number_of_Case(int pieces)
+{
+	int n_one, n_two, n_cases = 0;
+	
+	n_two = pieces / 2;
+
+	for (n_two; n_two >= 0; n_two -= 1)
+	{
+		n_one = pieces - 2 * n_two;
+		n_cases += Combination(n_one + n_two, n_two);
+	}
+
+	return n_cases;
+
+	// 두 조각으로 묶이는 경우를 파악하여, 조합으로 경우의 수를 구한다.
+}
+
+
+int Combination(int n, int k)
+{
+	if (k == n)
+	{
+		return 1;
+	}
+	else if (k == 1)
+	{
+		return n;
+	}
+	else if (k == 0)
+	{
+		return 1;
+	}
+	else
+	{
+		return Combination(n - 1, k) + Combination(n - 1, k - 1);
+	}
+
+	// 조합의 성질과 재귀를 이용하여 조합함수 구현 
+}
