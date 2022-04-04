@@ -35,7 +35,6 @@ int Get_Number_of_Case(int pieces)
 	// 두 조각으로 묶이는 경우를 파악하여, 조합으로 경우의 수를 구한다.
 }
 
-
 int Combination(int n, int k)
 {
 	if (k == n || k == 0)
