@@ -1,0 +1,75 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+
+
+using namespace std;
+
+enum {Add = 1, Search, Modify, Delete, Print, Save, Exit};
+
+class Book
+{
+protected :
+	string Book_Name, Author, P_Name, Genre;
+	int P_Year;
+
+public:
+	Book()
+	{
+		Book_Name = "";
+		Author = "";
+		P_Year = 0;
+		P_Name = "";
+		Genre = "";
+	}
+	void Get_Book_Info();
+
+};
+
+class Book_List : public Book
+{
+	Book* head;
+	Book* tail;
+public :
+	Book_List()
+	{
+
+	}
+};
+
+class Managing_Book : public Book_List
+{
+	void Add_Book();
+	void Search_Book();
+	void Modify_Book();
+	void Delete_Book();
+	void Print_Book_List();
+	void Save_Book_List();
+	void Exit_system();
+};
+
+void Managing_Book::Add_Book()
+{
+	Book* new_Book;
+	new_Book = new Book();
+
+	string nname;
+
+	cout << "추가하실 책의 이름을 적어주세요";
+	cin >> nname;
+
+}
+
+
+
+void Managing_Book::Exit_system()
+{
+	Save_Book_List();
+}
+
+int main()
+{
+
+
+	return 0;
+}
