@@ -1,7 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
-
+#include <fstream>  // 파일 입출력
+#include <string>  // getline함수
 
 using namespace std;
 
@@ -9,7 +10,7 @@ enum {Add = 1, Search, Modify, Delete, Print, Save, Exit};
 
 class Book
 {
-protected :
+private :
 	string Book_Name, Author, P_Name, Genre;
 	int P_Year;
 
@@ -22,9 +23,21 @@ public:
 		P_Name = "";
 		Genre = "";
 	}
-	void Get_Book_Info();
+
+	Book* next_Book;
+
+	void Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG);
 
 };
+
+void Book::Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG)
+{
+	Book_Name = nBN;
+	Author = nA;
+	P_Year = nPY;
+	P_Name = nPN;
+	Genre = nG;
+}
 
 class Book_List : public Book
 {
@@ -33,43 +46,186 @@ class Book_List : public Book
 public :
 	Book_List()
 	{
+		Book* init_node;
+		init_node = new Book();
 
+		head = init_node;
+		tail = init_node;
 	}
-};
 
-class Managing_Book : public Book_List
-{
+	void Load_txt();
+	void Save_txt();
+	
 	void Add_Book();
 	void Search_Book();
 	void Modify_Book();
 	void Delete_Book();
 	void Print_Book_List();
 	void Save_Book_List();
-	void Exit_system();
+
+	void Managing_Book();
+
 };
 
-void Managing_Book::Add_Book()
+void Book_List::Load_txt()
+{
+	ifstream txtfile("input.txt");
+
+	string line;
+
+	while (getline(txtfile, line))
+	{
+		string BN, A, PY, PN, G;
+
+		int i = 0;
+		int len = line.length();
+
+		while (line[i] != ' ')
+		{
+			BN.push_back(line[i]);
+			i++;
+		}
+		i++;
+
+		while (line[i] != ' ')
+		{
+			A.push_back(line[i]);
+			i++;
+		}
+		i++;
+
+		while (line[i] != ' ')
+		{
+			PY.push_back(line[i]);
+			i++;
+		}
+		i++;
+
+		while (line[i] != ' ')
+		{
+			PN.push_back(line[i]);
+			i++;
+		}
+		i++;
+
+		while (line[i] != ' ')
+		{
+			G.push_back(line[i]);
+			i++;
+		}
+		i++;
+
+		Book* n_Book;
+		n_Book->Get_Book_Info(BN, A, stoi(PY), PN, G);  // stoi
+
+		tail->next_Book = n_Book;
+		tail = n_Book;
+	}
+	txtfile.close();
+}
+
+void Book_List::Save_txt()
+{
+	ofstream txtfile;
+	txtfile.open("input.txt");
+
+	Book* Check_Point;
+	
+}
+
+void Book_List::Add_Book()
 {
 	Book* new_Book;
 	new_Book = new Book();
 
-	string nname;
+	string nnb, na, npn, ng;
+	int npy;
 
-	cout << "추가하실 책의 이름을 적어주세요";
-	cin >> nname;
+	cout << "추가하실 책의 이름을 적어주세요.";
+	cin >> nnb;
+
+	cout << "추가하실 책의 저자를 적어주세요.";
+	cin >> na;
+
+	cout << "추가하실 책의 출판연도를 적어주세요.";
+	cin >> npy;
+
+	cout << "추가하실 책의 출판사를 적어주세요.";
+	cin >> npn;
+
+	cout << "추가하실 책의 장르를 적어주세요.";
+	cin >> ng;
+
+	new_Book->Get_Book_Info(nnb, na, npy, npn, ng);
+
+	tail->next_Book = new_Book;
+	tail = new_Book;
 
 }
 
 
 
-void Managing_Book::Exit_system()
+void Book_List::Managing_Book()
 {
-	Save_Book_List();
+	int imenu;
+	
+	do
+	{
+		cout << "원하시는 메뉴를 입력하세요." << endl
+		<< "1) 도서 추가" << endl
+		<< "2) 도서 검색" << endl
+		<< "3) 도서 정보 수정" << endl
+		<< "4) 도서 삭제" << endl
+		<< "5) 도서 목록 출력" << endl
+		<< "6) 저장" << endl
+		<< "7) 프로그램 나가기(자동저장)" << endl;
+
+		cin >> imenu;
+
+		switch (imenu)
+		{
+		case Add :
+			Add_Book();
+			break;
+		case Search :
+			Search_Book();
+			break;
+		case Modify :
+			Modify_Book();
+			break;
+		case Delete :
+			Delete_Book();
+			break;
+		case Print :
+			Print_Book_List();
+			break;
+		case Save :
+		case Exit :
+			Save_Book_List();
+			break;
+		}
+
+		if (imenu < 1 || imenu > 7)
+		{
+			cout << "잘못된 입력입니다." << endl << endl;
+		}
+		else
+		{
+			cout << endl;
+		}
+		
+	} while (imenu != 7);
+
+	cout << "프로그램을 종료합니다." << endl;
 }
 
 int main()
 {
+	Book_List* Book_DB;
 
+	Book_DB->Load_txt();
+	Book_DB->Managing_Book();
+	Book_DB->Save_txt();
 
 	return 0;
 }
