@@ -1,8 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
-#include <fstream>  // 파일 입출력
-#include <string>  // getline함수
+#include <fstream> 
+#include <string>  
 
 using namespace std;
 
@@ -27,6 +27,11 @@ public:
 	Book* next_Book;
 
 	void Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG);
+	string push_Book_Name() { return Book_Name; }
+	string push_Author() { return Author; }
+	int push_P_Year() { return P_Year; }
+	string push_P_Name() { return P_Name; }
+	string push_Genre() { return Genre; }
 
 };
 
@@ -130,7 +135,34 @@ void Book_List::Save_txt()
 	txtfile.open("input.txt");
 
 	Book* Check_Point;
+	Check_Point = head->next_Book;
+
+	while (Check_Point != NULL)
+	{
+		string line;
+
+		line.append(Check_Point->push_Book_Name());
+		line.append(" ");
+
+		line.append(Check_Point->push_Author());
+		line.append(" ");
+
+		string py = to_string(Check_Point->push_P_Year());
+		line.append(py);
+		line.append(" ");
+
+		line.append(Check_Point->push_P_Name());
+		line.append(" ");
+
+		line.append(Check_Point->push_Genre());
+		line.append("\n");
+
+		txtfile.write(line.c_str(), line.size());
+
+		Check_Point = Check_Point->next_Book;
+	}
 	
+	txtfile.close();
 }
 
 void Book_List::Add_Book()
