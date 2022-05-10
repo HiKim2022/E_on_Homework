@@ -1,17 +1,17 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
-#include <fstream> 
-#include <string>  
+#include <fstream>
+#include <string>
 
 using namespace std;
 
-enum {Add = 1, Search, Modify, Delete, Print, Save, Exit};
+enum { Add = 1, Search, Modify, Delete, Print, Save, Exit };
 
 class Book
 {
 	friend class Book_List;
-private :
+private:
 	string Book_Name, Author, P_Name, Genre;
 	int P_Year;
 
@@ -55,7 +55,7 @@ class Book_List : public Book
 {
 	Book* head;
 	Book* tail;
-public :
+public:
 	Book_List()
 	{
 		Book* init_node;
@@ -67,7 +67,7 @@ public :
 
 	void Load_txt();
 	void Save_txt();
-	
+
 	void Add_Book();
 	void Search_Book();
 	void Modify_Book();
@@ -167,7 +167,7 @@ void Book_List::Save_txt()
 
 		Check_Point = Check_Point->next_Book;
 	}
-	
+
 	txtfile.close();
 }
 
@@ -209,7 +209,7 @@ void Book_List::Search_Book()
 		<< "3) 출판연도" << endl
 		<< "4) 출판사" << endl
 		<< "5) 책 장르" << endl;
-	
+
 	int itheme, i;
 	cin >> itheme;
 
@@ -245,7 +245,7 @@ void Book_List::Search_Book()
 		}
 
 		break;
-		
+
 	case 2:
 		cout << "저자를 입력해 주세요 : ";
 		cin >> sinput;
@@ -279,7 +279,7 @@ void Book_List::Search_Book()
 
 		while (Check_Point != NULL)
 		{
-			if (iinput ==  Check_Point->P_Year)
+			if (iinput == Check_Point->P_Year)
 			{
 				cout << "찾으시는 책의 정보입니다." << endl;
 				Check_Point->Show_Book_Info();
@@ -312,7 +312,7 @@ void Book_List::Search_Book()
 			}
 			Check_Point = Check_Point->next_Book;
 		}
-		
+
 		if (i == 0)
 		{
 			cout << "찾으시는 책이 없습니다." << endl << endl;
@@ -408,7 +408,7 @@ void Book_List::Delete_Book()
 	cout << "삭제할 책의 이름을 적어주세요 : ";
 	cin >> sinput;
 
-	Book *Check_Point1, *Check_Point2;
+	Book* Check_Point1, * Check_Point2;
 	Check_Point1 = new Book();
 	Check_Point2 = new Book();
 	Check_Point1 = head;
@@ -457,39 +457,39 @@ void Book_List::Print_Book_List()
 void Book_List::Managing_Book()
 {
 	int imenu;
-	
+
 	do
 	{
 		cout << "원하시는 메뉴를 입력하세요." << endl
-		<< "1) 도서 추가" << endl
-		<< "2) 도서 검색" << endl
-		<< "3) 도서 정보 수정" << endl
-		<< "4) 도서 삭제" << endl
-		<< "5) 도서 목록 출력" << endl
-		<< "6) 저장" << endl
-		<< "7) 프로그램 나가기(자동저장)" << endl;
+			<< "1) 도서 추가" << endl
+			<< "2) 도서 검색" << endl
+			<< "3) 도서 정보 수정" << endl
+			<< "4) 도서 삭제" << endl
+			<< "5) 도서 목록 출력" << endl
+			<< "6) 저장" << endl
+			<< "7) 프로그램 나가기(자동저장)" << endl;
 
 		cin >> imenu;
 
 		switch (imenu)
 		{
-		case Add :
+		case Add:
 			Add_Book();
 			break;
-		case Search :
+		case Search:
 			Search_Book();
 			break;
-		case Modify :
+		case Modify:
 			Modify_Book();
 			break;
-		case Delete :
+		case Delete:
 			Delete_Book();
 			break;
-		case Print :
+		case Print:
 			Print_Book_List();
 			break;
-		case Save :
-		case Exit :
+		case Save:
+		case Exit:
 			Save_txt();
 			break;
 		}
@@ -502,7 +502,7 @@ void Book_List::Managing_Book()
 		{
 			cout << endl;
 		}
-		
+
 	} while (imenu != 7);
 
 	cout << "프로그램을 종료합니다." << endl;
