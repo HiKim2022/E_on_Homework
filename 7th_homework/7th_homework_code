@@ -10,6 +10,7 @@ enum {Add = 1, Search, Modify, Delete, Print, Save, Exit};
 
 class Book
 {
+	friend class Book_List;
 private :
 	string Book_Name, Author, P_Name, Genre;
 	int P_Year;
@@ -27,12 +28,13 @@ public:
 	Book* next_Book;
 
 	void Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG);
+	void Show_Book_Info();
+
 	string push_Book_Name() { return Book_Name; }
 	string push_Author() { return Author; }
 	int push_P_Year() { return P_Year; }
 	string push_P_Name() { return P_Name; }
 	string push_Genre() { return Genre; }
-
 };
 
 void Book::Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG)
@@ -42,6 +44,11 @@ void Book::Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG)
 	P_Year = nPY;
 	P_Name = nPN;
 	Genre = nG;
+}
+
+void Book::Show_Book_Info()
+{
+	cout << Book_Name << "\t" << Author << "\t" << P_Year << "\t" << P_Name << "\t" << Genre << endl << endl;
 }
 
 class Book_List : public Book
@@ -66,10 +73,8 @@ public :
 	void Modify_Book();
 	void Delete_Book();
 	void Print_Book_List();
-	void Save_Book_List();
 
 	void Managing_Book();
-
 };
 
 void Book_List::Load_txt()
@@ -120,11 +125,12 @@ void Book_List::Load_txt()
 		}
 		i++;
 
-		Book* n_Book;
-		n_Book->Get_Book_Info(BN, A, stoi(PY), PN, G);  // stoi
+		Book n_Book;
+		Book* n_Book_p = &n_Book;
+		n_Book_p->Get_Book_Info(BN, A, stoi(PY), PN, G);  // stoi
 
-		tail->next_Book = n_Book;
-		tail = n_Book;
+		tail->next_Book = n_Book_p;
+		tail = n_Book_p;
 	}
 	txtfile.close();
 }
@@ -195,7 +201,258 @@ void Book_List::Add_Book()
 
 }
 
+void Book_List::Search_Book()
+{
+	cout << "검색 테마를 입력해 주세요 : " << endl
+		<< "1) 책 이름" << endl
+		<< "2) 저자 이름" << endl
+		<< "3) 출판연도" << endl
+		<< "4) 출판사" << endl
+		<< "5) 책 장르" << endl;
+	
+	int itheme, i;
+	cin >> itheme;
 
+	string sinput;
+	int iinput;
+
+	Book* Check_Point;
+	Check_Point = new Book();
+
+	switch (itheme)
+	{
+	case 1:
+		cout << "책 이름을 입력해 주세요 : ";
+		cin >> sinput;
+
+		Check_Point = head->next_Book;
+		i = 0;
+
+		while (Check_Point != NULL)
+		{
+			if (sinput == Check_Point->Book_Name)
+			{
+				cout << "찾으시는 책의 정보입니다." << endl;
+				Check_Point->Show_Book_Info();
+				i++;
+			}
+			Check_Point = Check_Point->next_Book;
+		}
+
+		if (i == 0)
+		{
+			cout << "찾으시는 책이 없습니다." << endl << endl;
+		}
+
+		break;
+		
+	case 2:
+		cout << "저자를 입력해 주세요 : ";
+		cin >> sinput;
+
+		Check_Point = head->next_Book;
+		i = 0;
+
+		while (Check_Point != NULL)
+		{
+			if (sinput == Check_Point->Author)
+			{
+				cout << "찾으시는 책의 정보입니다." << endl;
+				Check_Point->Show_Book_Info();
+				i++;
+			}
+			Check_Point = Check_Point->next_Book;
+		}
+
+		if (i == 0)
+		{
+			cout << "찾으시는 책이 없습니다." << endl << endl;
+		}
+
+		break;
+
+	case 3:
+		cout << "출판 연도를 입력해 주세요 : ";
+		cin >> iinput;
+
+		i = 0;
+
+		while (Check_Point != NULL)
+		{
+			if (iinput ==  Check_Point->P_Year)
+			{
+				cout << "찾으시는 책의 정보입니다." << endl;
+				Check_Point->Show_Book_Info();
+				i++;
+			}
+			Check_Point = Check_Point->next_Book;
+		}
+
+		if (i == 0)
+		{
+			cout << "찾으시는 책이 없습니다." << endl << endl;
+		}
+
+		break;
+
+	case 4:
+		cout << "출판사를 입력해 주세요 : ";
+		cin >> sinput;
+
+		Check_Point = head->next_Book;
+		i = 0;
+
+		while (Check_Point != NULL)
+		{
+			if (sinput == Check_Point->P_Name)
+			{
+				cout << "찾으시는 책의 정보입니다." << endl;
+				Check_Point->Show_Book_Info();
+				i++;
+			}
+			Check_Point = Check_Point->next_Book;
+		}
+		
+		if (i == 0)
+		{
+			cout << "찾으시는 책이 없습니다." << endl << endl;
+		}
+
+		break;
+
+	case 5:
+		cout << "장르를 입력해 주세요 : ";
+		cin >> sinput;
+
+		Check_Point = head->next_Book;
+		i = 0;
+
+		while (Check_Point != NULL)
+		{
+			if (sinput == Check_Point->Genre)
+			{
+				cout << "찾으시는 책의 정보입니다." << endl;
+				Check_Point->Show_Book_Info();
+				i++;
+			}
+			Check_Point = Check_Point->next_Book;
+		}
+
+		if (i == 0)
+		{
+			cout << "찾으시는 책이 없습니다." << endl << endl;
+		}
+
+		break;
+
+	}
+
+}
+
+void Book_List::Modify_Book()
+{
+	string sinput;
+	int i = 0;
+
+	cout << "수정할 책의 이름을 적어주세요 : ";
+	cin >> sinput;
+
+	Book* Check_Point;
+	Check_Point = new Book();
+	Check_Point = head->next_Book;
+
+	while (Check_Point != NULL)
+	{
+		if (sinput == Check_Point->Book_Name)
+		{
+			cout << "수정할 책의 정보입니다." << endl;
+			Check_Point->Show_Book_Info();
+			i++;
+			break;
+		}
+		Check_Point = Check_Point->next_Book;
+	}
+
+	if (i == 0)
+	{
+		cout << "찾으시는 책이 없습니다." << endl << endl;
+	}
+
+	string nnb, na, npn, ng;
+	int npy;
+
+	cout << "책의 이름을 적어주세요.";
+	cin >> nnb;
+
+	cout << "책의 저자를 적어주세요.";
+	cin >> na;
+
+	cout << "책의 출판연도를 적어주세요.";
+	cin >> npy;
+
+	cout << "책의 출판사를 적어주세요.";
+	cin >> npn;
+
+	cout << "책의 장르를 적어주세요.";
+	cin >> ng;
+
+	Check_Point->Get_Book_Info(nnb, na, npy, npn, ng);
+
+}
+
+void Book_List::Delete_Book()
+{
+	string sinput;
+	int i = 0;
+
+	cout << "삭제할 책의 이름을 적어주세요 : ";
+	cin >> sinput;
+
+	Book *Check_Point1, *Check_Point2;
+	Check_Point1 = new Book();
+	Check_Point2 = new Book();
+	Check_Point1 = head;
+	Check_Point2 = head->next_Book;
+
+	while (Check_Point2 != NULL)
+	{
+		if (sinput == Check_Point2->Book_Name)
+		{
+			cout << "삭제할 책의 정보입니다." << endl;
+			Check_Point2->Show_Book_Info();
+			i++;
+
+			Check_Point2 = Check_Point2->next_Book;
+			Check_Point1->next_Book = Check_Point2;
+
+			cout << "삭제하였습니다." << endl << endl;
+
+			break;
+		}
+		Check_Point2 = Check_Point2->next_Book;
+		Check_Point1 = Check_Point1->next_Book;
+	}
+
+	if (i == 0)
+	{
+		cout << "찾으시는 책이 없습니다." << endl << endl;
+	}
+}
+
+void Book_List::Print_Book_List()
+{
+	cout << "현재 도서 목록입니다." << endl;
+
+	Book* Check_Point;
+	Check_Point = new Book();
+	Check_Point = head->next_Book;
+
+	while (Check_Point != NULL)
+	{
+		Check_Point->Show_Book_Info();
+		Check_Point = Check_Point->next_Book;
+	}
+}
 
 void Book_List::Managing_Book()
 {
@@ -233,7 +490,7 @@ void Book_List::Managing_Book()
 			break;
 		case Save :
 		case Exit :
-			Save_Book_List();
+			Save_txt();
 			break;
 		}
 
@@ -253,11 +510,12 @@ void Book_List::Managing_Book()
 
 int main()
 {
-	Book_List* Book_DB;
+	Book_List Book_DB;
+	Book_List* Book_DB_p = &Book_DB;
 
-	Book_DB->Load_txt();
-	Book_DB->Managing_Book();
-	Book_DB->Save_txt();
+	Book_DB_p->Load_txt();
+	Book_DB_p->Managing_Book();
+	Book_DB_p->Save_txt();
 
 	return 0;
 }
