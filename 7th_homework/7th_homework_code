@@ -7,6 +7,7 @@
 using namespace std;
 
 enum { Add = 1, Search, Modify, Delete, Print, Save, Exit };
+enum { bookname = 1, author, pyear, pname, genre};
 
 class Book
 {
@@ -127,7 +128,7 @@ void Book_List::Load_txt()
 
 		Book n_Book;
 		Book* n_Book_p = &n_Book;
-		n_Book_p->Get_Book_Info(BN, A, stoi(PY), PN, G);  // stoi
+		n_Book_p->Get_Book_Info(BN, A, stoi(PY), PN, G);  
 
 		tail->next_Book = n_Book_p;
 		tail = n_Book_p;
@@ -221,7 +222,7 @@ void Book_List::Search_Book()
 
 	switch (itheme)
 	{
-	case 1:
+	case bookname:
 		cout << "책 이름을 입력해 주세요 : ";
 		cin >> sinput;
 
@@ -246,7 +247,7 @@ void Book_List::Search_Book()
 
 		break;
 
-	case 2:
+	case author:
 		cout << "저자를 입력해 주세요 : ";
 		cin >> sinput;
 
@@ -271,7 +272,7 @@ void Book_List::Search_Book()
 
 		break;
 
-	case 3:
+	case pyear:
 		cout << "출판 연도를 입력해 주세요 : ";
 		cin >> iinput;
 
@@ -295,7 +296,7 @@ void Book_List::Search_Book()
 
 		break;
 
-	case 4:
+	case pname:
 		cout << "출판사를 입력해 주세요 : ";
 		cin >> sinput;
 
@@ -320,7 +321,7 @@ void Book_List::Search_Book()
 
 		break;
 
-	case 5:
+	case genre:
 		cout << "장르를 입력해 주세요 : ";
 		cin >> sinput;
 
