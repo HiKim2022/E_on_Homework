@@ -478,7 +478,6 @@ int main()
 
 	Book_DB_p->Load_txt();
 	Book_DB_p->Managing_Book();
-	Book_DB_p->Save_txt();
 
 	return 0;
 }
