@@ -91,7 +91,7 @@ void Book_List::Load_txt()
 		}
 
 		string BN, A, PY, PN, G;
-		fscanf(txtfile, "%s %s %s %s %s\n", BN, A, PY, PN, G);
+		fscanf(txtfile, "%s %s %s %s %s\n", &BN, &A, &PY, &PN, &G);
 
 		Book n_Book;
 		Book* n_Book_p = &n_Book;
@@ -106,38 +106,25 @@ void Book_List::Load_txt()
 
 void Book_List::Save_txt()
 {
-	ofstream txtfile;
-	txtfile.open("input.txt");
+	FILE* txtfile;
+	txtfile = fopen("input.txt", "w");
 
 	Book* Check_Point;
 	Check_Point = head->next_Book;
 
-	while (Check_Point != NULL)
+	while (true)
 	{
-		string line;
-
-		line.append(Check_Point->push_Book_Name());
-		line.append(" ");
-
-		line.append(Check_Point->push_Author());
-		line.append(" ");
-
-		string py = to_string(Check_Point->push_P_Year());
-		line.append(py);
-		line.append(" ");
-
-		line.append(Check_Point->push_P_Name());
-		line.append(" ");
-
-		line.append(Check_Point->push_Genre());
-		line.append("\n");
-
-		txtfile.write(line.c_str(), line.size());
+		fprintf(txtfile, "%s %s %d %s %s\n", Check_Point->push_Book_Name(), Check_Point->push_Author()
+			, Check_Point->push_P_Year(), Check_Point->push_P_Name(), Check_Point->push_Genre());
 
 		Check_Point = Check_Point->next_Book;
+		if (Check_Point = NULL)
+		{
+			break;
+		}
 	}
 
-	txtfile.close();
+	fclose(txtfile);
 }
 
 void Book_List::Add_Book()
@@ -488,8 +475,6 @@ int main()
 {
 	Book_List Book_DB;
 	Book_List* Book_DB_p = &Book_DB;
-
-
 
 	Book_DB_p->Load_txt();
 	Book_DB_p->Managing_Book();
