@@ -11,7 +11,6 @@ enum { bookname = 1, author, pyear, pname, genre};
 
 class Book
 {
-	friend class Book_List;
 private:
 	string Book_Name, Author, P_Name, Genre;
 	int P_Year;
@@ -24,13 +23,14 @@ public:
 		P_Year = 0;
 		P_Name = "";
 		Genre = "";
+
+		next_Book = NULL;
 	}
 
 	Book* next_Book;
 
-	void Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG);
 	void Show_Book_Info();
-
+	void Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG);
 	string push_Book_Name() { return Book_Name; }
 	string push_Author() { return Author; }
 	int push_P_Year() { return P_Year; }
@@ -49,7 +49,7 @@ void Book::Get_Book_Info(string nBN, string nA, int nPY, string nPN, string nG)
 
 void Book::Show_Book_Info()
 {
-	cout << Book_Name << "\t" << Author << "\t" << P_Year << "\t" << P_Name << "\t" << Genre << endl << endl;
+	cout << Book_Name << "\t" << Author << "\t" << P_Year << "\t" << P_Name << "\t" << Genre << endl;
 }
 
 class Book_List : public Book
@@ -80,60 +80,28 @@ public:
 
 void Book_List::Load_txt()
 {
-	ifstream txtfile("input.txt");
+	FILE *txtfile;
+	txtfile = fopen("input.txt", "r");
 
-	string line;
-
-	while (getline(txtfile, line))
+	while (true)
 	{
+		if (!feof(txtfile))
+		{
+			break;
+		}
+
 		string BN, A, PY, PN, G;
-
-		int i = 0;
-		int len = line.length();
-
-		while (line[i] != ' ')
-		{
-			BN.push_back(line[i]);
-			i++;
-		}
-		i++;
-
-		while (line[i] != ' ')
-		{
-			A.push_back(line[i]);
-			i++;
-		}
-		i++;
-
-		while (line[i] != ' ')
-		{
-			PY.push_back(line[i]);
-			i++;
-		}
-		i++;
-
-		while (line[i] != ' ')
-		{
-			PN.push_back(line[i]);
-			i++;
-		}
-		i++;
-
-		while (line[i] != ' ')
-		{
-			G.push_back(line[i]);
-			i++;
-		}
-		i++;
+		fscanf(txtfile, "%s %s %s %s %s\n", BN, A, PY, PN, G);
 
 		Book n_Book;
 		Book* n_Book_p = &n_Book;
-		n_Book_p->Get_Book_Info(BN, A, stoi(PY), PN, G);  
+		n_Book_p->Get_Book_Info(BN, A, stoi(PY), PN, G);
 
 		tail->next_Book = n_Book_p;
 		tail = n_Book_p;
 	}
-	txtfile.close();
+	
+	fclose(txtfile);
 }
 
 void Book_List::Save_txt()
@@ -231,10 +199,11 @@ void Book_List::Search_Book()
 
 		while (Check_Point != NULL)
 		{
-			if (sinput == Check_Point->Book_Name)
+			if (sinput == Check_Point->push_Book_Name())
 			{
 				cout << "찾으시는 책의 정보입니다." << endl;
 				Check_Point->Show_Book_Info();
+				cout << endl;
 				i++;
 			}
 			Check_Point = Check_Point->next_Book;
@@ -256,10 +225,11 @@ void Book_List::Search_Book()
 
 		while (Check_Point != NULL)
 		{
-			if (sinput == Check_Point->Author)
+			if (sinput == Check_Point->push_Author())
 			{
 				cout << "찾으시는 책의 정보입니다." << endl;
 				Check_Point->Show_Book_Info();
+				cout << endl;
 				i++;
 			}
 			Check_Point = Check_Point->next_Book;
@@ -280,10 +250,11 @@ void Book_List::Search_Book()
 
 		while (Check_Point != NULL)
 		{
-			if (iinput == Check_Point->P_Year)
+			if (iinput == Check_Point->push_P_Year())
 			{
 				cout << "찾으시는 책의 정보입니다." << endl;
 				Check_Point->Show_Book_Info();
+				cout << endl;
 				i++;
 			}
 			Check_Point = Check_Point->next_Book;
@@ -305,10 +276,11 @@ void Book_List::Search_Book()
 
 		while (Check_Point != NULL)
 		{
-			if (sinput == Check_Point->P_Name)
+			if (sinput == Check_Point->push_P_Name())
 			{
 				cout << "찾으시는 책의 정보입니다." << endl;
 				Check_Point->Show_Book_Info();
+				cout << endl;
 				i++;
 			}
 			Check_Point = Check_Point->next_Book;
@@ -330,10 +302,11 @@ void Book_List::Search_Book()
 
 		while (Check_Point != NULL)
 		{
-			if (sinput == Check_Point->Genre)
+			if (sinput == Check_Point->push_Genre())
 			{
 				cout << "찾으시는 책의 정보입니다." << endl;
 				Check_Point->Show_Book_Info();
+				cout << endl;
 				i++;
 			}
 			Check_Point = Check_Point->next_Book;
@@ -364,10 +337,11 @@ void Book_List::Modify_Book()
 
 	while (Check_Point != NULL)
 	{
-		if (sinput == Check_Point->Book_Name)
+		if (sinput == Check_Point->push_Book_Name())
 		{
 			cout << "수정할 책의 정보입니다." << endl;
 			Check_Point->Show_Book_Info();
+			cout << endl;
 			i++;
 			break;
 		}
@@ -417,7 +391,7 @@ void Book_List::Delete_Book()
 
 	while (Check_Point2 != NULL)
 	{
-		if (sinput == Check_Point2->Book_Name)
+		if (sinput == Check_Point2->push_Book_Name())
 		{
 			cout << "삭제할 책의 정보입니다." << endl;
 			Check_Point2->Show_Book_Info();
@@ -451,6 +425,7 @@ void Book_List::Print_Book_List()
 	while (Check_Point != NULL)
 	{
 		Check_Point->Show_Book_Info();
+		cout << endl;
 		Check_Point = Check_Point->next_Book;
 	}
 }
@@ -513,6 +488,8 @@ int main()
 {
 	Book_List Book_DB;
 	Book_List* Book_DB_p = &Book_DB;
+
+
 
 	Book_DB_p->Load_txt();
 	Book_DB_p->Managing_Book();
