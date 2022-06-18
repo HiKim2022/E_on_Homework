@@ -1,1 +1,160 @@
-.
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+class Train
+{
+	int Hour, Minute, Seats;
+	string Departure_station, Arrival_station, Kind_of_Train;
+
+public :
+
+	Train* next_train;
+
+	Train()
+	{
+		Hour = 0;
+		Minute = 0;
+		Seats = 0;
+		Departure_station = "";
+		Arrival_station = "";
+		Kind_of_Train = "";
+		next_train = NULL;
+	}
+
+	void Get_train_info(int h, int m, string ds, string as, string kot, int nos);
+	void Print_train_info();
+
+	int push_hour() { return Hour; }
+	int push_minute() { return Minute; }
+	string push_departure() { return Departure_station; }
+	string push_arrival() { return Arrival_station; }
+	string push_KoT() { return Kind_of_Train; }
+	int push_seats() { return Seats; }
+
+	void sub_seat() { Seats--; }
+
+};
+
+void Train::Get_train_info(int h, int m, string ds, string as, string kot, int nos)
+{
+	Hour = h;
+	Minute = m;
+	Departure_station = ds;
+	Arrival_station = as;
+	Kind_of_Train = kot;
+	Seats = nos;
+}
+
+void Train::Print_train_info()
+{
+	cout << Hour << ":" << Minute << " " << Departure_station << " -> " << Arrival_station << " " << Kind_of_Train;
+	if (Seats == 0)
+	{
+		cout << " 매진" << endl;
+	}
+	else
+	{
+		cout << " " << Seats << endl;
+	}
+}
+
+class Train_Table
+{
+	Train* head;
+	Train* tail;
+public:
+	Train_Table()
+	{
+		Train* dummy;
+		dummy = new Train();
+
+		head = dummy;
+		tail = dummy;
+	}
+
+	void Load_Train_Table();
+	void Reserve_Train();
+	void Print_Train_Table();
+
+};
+
+void Train_Table::Load_Train_Table()
+{
+	FILE* list;
+	list = fopen("TrainList.txt", "r");
+
+	string temp;
+	fscanf(list, "%s", temp);
+
+	while (!feof(list))
+	{
+		int h, m, s;
+		string ds, as, kot;
+		fscanf(list, "%d:%d %s -> %s %s %d", &h, &m, &ds, &as, &kot, &s);
+
+		Train* ntrain;
+		ntrain->Get_train_info(h, m, ds, as, kot, s);
+		tail->next_train = ntrain;
+		tail = ntrain;
+	}
+
+	fclose(list);
+
+}
+
+void Train_Table::Reserve_Train()
+{
+	int h, m, seats;
+	string ds, as, kot;
+
+	cout << "원하는 시간을 입력 하세요(ex 1 20) : " ;
+	cin >> h >> m;
+	cout << "출발역과 도착역을 입력하세요(ex 서울 부산) : ";
+	cin >> ds >> as;
+	cout << "원하는 열차 종류를 입력 하세요 : ";
+	cin >> kot;
+	cout << "입력하신 정보입니다." << endl;
+	cout << h << ":" << m << " " << ds << " -> " << as << " " << kot << endl << endl;
+	
+	bool find = false;
+	Train* Check;
+	Check = head->next_train;
+
+	while (!find || Check != NULL)
+	{
+		if ()
+	}
+
+
+	cout << "가장 빠른 열차 입니다."
+
+
+
+}
+
+void Train_Table::Print_Train_Table()
+{
+	Train* current;
+	current = head->next_train;
+	while (current != NULL)
+	{
+		current->Print_train_info();
+	}
+}
+
+class Person
+{
+
+};
+
+int main()
+{
+
+
+	return 0;
+}
