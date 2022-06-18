@@ -81,6 +81,7 @@ public:
 	void Reserve_Train();
 	void Print_Train_Table();
 
+	
 };
 
 void Train_Table::Load_Train_Table()
@@ -125,14 +126,47 @@ void Train_Table::Reserve_Train()
 	Train* Check;
 	Check = head->next_train;
 
-	while (!find || Check != NULL)
+	while (!find && Check != NULL)
 	{
-		if ()
+		if (ds == Check->push_departure())
+		{
+			if (as == Check->push_arrival())
+			{
+				if (kot == Check->push_KoT())
+				{
+					if (h <= Check->push_hour())
+					{
+						if (m <= Check->push_minute())
+						{
+							if (Check->push_seats() > 0)
+								find == true;
+						}
+					}
+				}
+			}
+		}
+
+		if (find == false)
+		{
+			Check == Check->next_train;
+		}
 	}
 
-
-	cout << "가장 빠른 열차 입니다."
-
+	if (find == false)
+	{
+		cout << "찾으시는 기차가 없습니다. " << endl;
+	}
+	else
+	{
+		cout << "가장 빠른 열차 입니다." << endl;
+		cout << Check->push_hour() << ":" << Check->push_minute() << " " << Check->push_departure() 
+			<< " -> " << Check->push_arrival() << " " << Check->push_KoT() << Check->push_seats();
+		
+		int i;
+		cout << "1) 예매" << endl << "2) 메뉴로 가기";
+		cin >> i;
+	}
+	
 
 
 }
