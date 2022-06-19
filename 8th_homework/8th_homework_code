@@ -337,9 +337,10 @@ void Person::Menu()
 
 int main()
 {
-	Person* I;
-	I->Load_Train_Table();
-	I->Menu();
+	Person I;
+	Person* I_p = &I;
+	I_p->Load_Train_Table();
+	I_p->Menu();
 
 	return 0;
 }
