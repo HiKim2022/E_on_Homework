@@ -65,9 +65,10 @@ void Train::Print_train_info()
 
 class Train_Table
 {
+public:
 	Train* head;
 	Train* tail;
-public:
+
 	Train_Table()
 	{
 		Train* dummy;
@@ -78,10 +79,8 @@ public:
 	}
 
 	void Load_Train_Table();
-	void Reserve_Train();
 	void Print_Train_Table();
 
-	
 };
 
 void Train_Table::Load_Train_Table()
@@ -98,7 +97,7 @@ void Train_Table::Load_Train_Table()
 		string ds, as, kot;
 		fscanf(list, "%d:%d %s -> %s %s %d", &h, &m, &ds, &as, &kot, &s);
 
-		Train* ntrain;
+		Train* ntrain = new Train();
 		ntrain->Get_train_info(h, m, ds, as, kot, s);
 		tail->next_train = ntrain;
 		tail = ntrain;
@@ -108,12 +107,44 @@ void Train_Table::Load_Train_Table()
 
 }
 
-void Train_Table::Reserve_Train()
+void Train_Table::Print_Train_Table()
+{
+	Train* current = new Train();
+	current = head->next_train;
+	while (current != NULL)
+	{
+		current->Print_train_info();
+		current = current->next_train;
+	}
+}
+
+class Person : public Train_Table
+{
+	Train* head_ticket;
+	Train* tail_ticket;
+public :
+	Person()
+	{
+		Train* dummy_ticket;
+		dummy_ticket = new Train();
+
+		head_ticket = dummy_ticket;
+		tail_ticket = dummy_ticket;
+	}
+
+	void Reserve_Train();
+	void Print_Ticket();
+	void Menu();
+
+};
+
+
+void Person::Reserve_Train()
 {
 	int h, m, seats;
 	string ds, as, kot;
 
-	cout << "원하는 시간을 입력 하세요(ex 1 20) : " ;
+	cout << "원하는 시간을 입력 하세요(ex 1 20) : ";
 	cin >> h >> m;
 	cout << "출발역과 도착역을 입력하세요(ex 서울 부산) : ";
 	cin >> ds >> as;
@@ -121,9 +152,9 @@ void Train_Table::Reserve_Train()
 	cin >> kot;
 	cout << "입력하신 정보입니다." << endl;
 	cout << h << ":" << m << " " << ds << " -> " << as << " " << kot << endl << endl;
-	
+
 	bool find = false;
-	Train* Check;
+	Train* Check = new Train();
 	Check = head->next_train;
 
 	while (!find && Check != NULL)
@@ -158,33 +189,82 @@ void Train_Table::Reserve_Train()
 	}
 	else
 	{
-		cout << "가장 빠른 열차 입니다." << endl;
-		cout << Check->push_hour() << ":" << Check->push_minute() << " " << Check->push_departure() 
+		cout << "가장 빠른 열차입니다." << endl;
+		cout << Check->push_hour() << ":" << Check->push_minute() << " " << Check->push_departure()
 			<< " -> " << Check->push_arrival() << " " << Check->push_KoT() << Check->push_seats();
 		
 		int i;
-		cout << "1) 예매" << endl << "2) 메뉴로 가기";
-		cin >> i;
-	}
-	
+		do
+		{
+			cout << "예매 하시겠습니까?" << endl;
+			cout << "1) 예매" << endl << "2) 메뉴로 가기" << endl;
+			cin >> i;
 
+			if (i == 1)
+			{
+				Check->sub_seat();
+				
+				Train* nticket = new Train();
+				nticket->Get_train_info(Check->push_hour(), Check->push_minute(), Check->push_departure(),
+					Check->push_arrival(), Check->push_KoT(), Check->push_seats());
+				tail_ticket->next_train = nticket;
+				tail = nticket;
+			}
+			else if (i == 2)
+			{
+				return;
+			}
+			else
+			{
+				cout << "잘못된 입력입니다." << endl;
+			}
+		} while (i > 2 || i < 0);
+	}
 
 }
 
-void Train_Table::Print_Train_Table()
+void Person::Print_Ticket()
 {
-	Train* current;
-	current = head->next_train;
-	while (current != NULL)
+	Train* current = new Train();
+	current = head_ticket->next_train;
+
+	while (current == NULL)
 	{
 		current->Print_train_info();
+		current = current->next_train;
 	}
 }
 
-class Person
+void Person::Menu()
 {
+	int i;
 
-};
+	do
+	{
+		cout << "원하는 메뉴를 입력하세요" << endl
+			<< "1) 빠른 예매" << endl
+			<< "2) 기차 현황 확인" << endl
+			<< "3) 나의 예매목록 확인 및 예매 취소" << endl
+			<< "4) 프로그램 종료" << endl;
+		cin >> i;
+
+		switch (i)
+		{
+		case 1:
+			Reserve_Train();
+			break;
+		case 2:
+			Print_Train_Table();
+		case 3:
+			Print_Ticket();
+		case 4:
+
+		default:
+			break;
+		}
+
+	} while (i != 4);
+}
 
 int main()
 {
