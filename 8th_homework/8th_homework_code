@@ -85,22 +85,22 @@ public:
 
 void Train_Table::Load_Train_Table()
 {
-	FILE* txtfile;
-	txtfile = fopen("TrainList.txt", "r");
+	FILE* list;
+	list = fopen("TrainList.txt", "r");
 
 	string temp;
-	fscanf(txtfile, "%s", &temp);
+	fscanf(list, "%s", &temp);
 
 	while (true)
 	{
-		if (feof(txtfile))
+		if (feof(list))
 		{
 			break;
 		}
 
 		int h, m, s;
 		string ds, as, kot;
-		fscanf(txtfile, "%d:%d %s -> %s %s %d", &h, &m, &ds, &as, &kot, &s);
+		fscanf(list, "%d:%d %s -> %s %s %d", &h, &m, &ds, &as, &kot, &s);
 
 		Train* ntrain = new Train();
 		ntrain->Get_train_info(h, m, ds, as, kot, s);
@@ -108,7 +108,7 @@ void Train_Table::Load_Train_Table()
 		tail = ntrain;
 	}
 	
-	fclose(txtfile);
+	fclose(list);
 
 }
 
