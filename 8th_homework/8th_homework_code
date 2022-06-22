@@ -133,14 +133,18 @@ void Train_Table::Load_Train_Table()
 			i++;
 		}
 
+		Train* newTrain = new Train();
+		newTrain->Get_train_info(stoi(h), stoi(m), ds, as, kot, stoi(s));
+		tail->next_train = newTrain;
+		tail = newTrain;
+
 	}
 	list.close();
 }
 
 void Train_Table::Print_Train_Table()
 {
-	Train* current = new Train();
-	current = head->next_train;
+	Train* current = head->next_train;
 	while (current != NULL)
 	{
 		current->Print_train_info();
@@ -184,7 +188,7 @@ void Person::Reserve_Train()
 	}
 	catch (int error)
 	{
-		cout << "Hour의 범위는 0 ~ 23입니다." << endl;
+		cout << "Hour의 범위는 0 ~ 23입니다. " << error << "은 잘못된 입력입니다." << endl;
 	}
 
 	try
@@ -196,7 +200,7 @@ void Person::Reserve_Train()
 	}
 	catch (int error)
 	{
-		cout << "Minute의 범위는 0 ~ 59입니다." << endl;
+		cout << "Minute의 범위는 0 ~ 59입니다. " << error << "은 잘못된 입력입니다." << endl;
 	}
 	
 	cout << "출발역과 도착역을 입력하세요(ex 서울 부산) : ";
@@ -219,14 +223,17 @@ void Person::Reserve_Train()
 			{
 				if (kot == Check->push_KoT())
 				{
-					if (h <= Check->push_hour())
+					if (h < Check->push_hour())
 					{
-						if (m <= Check->push_minute())
-						{
-							if (Check->push_seats() > 0)
-								find == true;
-						}
+						if (Check->push_seats())
+							find = true;
 					}
+					else if (h == Check->push_hour() && m <= Check->push_minute())
+					{
+						if (Check->push_seats())
+							find = true;
+					}
+					
 				}
 			}
 		}
